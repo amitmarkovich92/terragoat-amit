@@ -76,7 +76,6 @@ resource "aws_volume_attachment" "ebs_att" {
 
 resource "aws_security_group" "web-node" {
   # security group is open to the world in SSH port
-  name        = "${local.resource_prefix.value}-sg"
   description = "${local.resource_prefix.value} Security Group"
   vpc_id      = aws_vpc.web_vpc.id
 
@@ -116,7 +115,7 @@ resource "aws_security_group" "web-node" {
 
 resource "aws_vpc" "web_vpc" {
   cidr_block           = "172.16.0.0/16"
-  enable_dns_hostnames = true
+  enable_dns_hostnames = false
   enable_dns_support   = true
   tags = merge({
     Name = "${local.resource_prefix.value}-vpc"
@@ -136,7 +135,7 @@ resource "aws_subnet" "web_subnet" {
   vpc_id                  = aws_vpc.web_vpc.id
   cidr_block              = "172.16.10.0/24"
   availability_zone       = "${var.region}a"
-  map_public_ip_on_launch = true
+  map_public_ip_on_launch = false
 
   tags = merge({
     Name = "${local.resource_prefix.value}-subnet"
